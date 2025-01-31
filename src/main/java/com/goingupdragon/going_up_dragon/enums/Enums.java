@@ -20,4 +20,8 @@ public class Enums {
     public enum CourseLanguage {
         한국어, 영어, 일본어
     }
+
+    public enum EnrollmentStatus {
+        대기, 장바구니, 수강중, 환불요청중, 환불완료
+    }
 }
