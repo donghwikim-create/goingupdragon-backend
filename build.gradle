@@ -33,6 +33,10 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.3'
 
+	// 스프링 데이터 Elasticsearch
+	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+	implementation 'org.springframework.data:spring-data-elasticsearch'
+
 	// jdbc
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'mysql:mysql-connector-java:8.0.29'  // 최신 버전으로 수정
