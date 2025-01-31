@@ -10,10 +10,10 @@ import lombok.*;
 public class ReviewsDTO {
     private Integer reviewId;
     private Integer infoId;  // ✅ 회원 ID 추가
-    private String nickname; // ✅ 회원 닉네임 추가
+    private String nickName; // ✅ 회원 닉네임 추가
     private float rate;
     private String comment;
     private String reply;
-    private LocalDateTime createdAt;
-    private LocalDateTime replyCreatedAt;
+    private String createdAt;
+    private String replyCreatedAt;
 }
