@@ -3,7 +3,7 @@ package com.goingupdragon.going_up_dragon.controller;
 import com.goingupdragon.going_up_dragon.dto.CategoriesDTO;
 import com.goingupdragon.going_up_dragon.entity.Categories;
 import com.goingupdragon.going_up_dragon.service.CategoryService;
-import com.goingupdragon.going_up_dragon.service.DtoMapper;
+import com.goingupdragon.going_up_dragon.mapper.DtoMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
