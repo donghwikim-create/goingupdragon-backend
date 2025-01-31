@@ -1,4 +1,4 @@
-package com.goingupdragon.going_up_dragon.service;
+package com.goingupdragon.going_up_dragon.mapper;
 
 import com.goingupdragon.going_up_dragon.dto.CategoriesDTO;
 import com.goingupdragon.going_up_dragon.dto.SubjectTagsDTO;
