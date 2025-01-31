@@ -6,6 +6,7 @@ import com.goingupdragon.going_up_dragon.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,8 +26,8 @@ public class ReviewService {
                 review.getRate(),
                 review.getComment(),
                 review.getReply(),
-                review.getCreatedAt(),
-                review.getReplyCreateAt()
+                review.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), // ✅ 시간 제거
+                review.getReplyCreateAt() != null ? review.getReplyCreateAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) : null // ✅ 시간 제거 + null 체크
         )).collect(Collectors.toList());
     }
 }
