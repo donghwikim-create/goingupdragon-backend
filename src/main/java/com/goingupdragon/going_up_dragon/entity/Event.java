@@ -16,7 +16,7 @@ public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "event_id")
-    private Long id;
+    private Integer eventId;
 
     @Column(name = "event_start_date", nullable = false)
     private LocalDateTime startDate;

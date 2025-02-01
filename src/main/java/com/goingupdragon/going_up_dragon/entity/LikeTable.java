@@ -15,7 +15,7 @@ public class LikeTable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "like_id")
-    private Long id;
+    private Integer likeId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "info_id", nullable = false)
