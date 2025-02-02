@@ -23,7 +23,7 @@ public class LikeTable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "review_id")
-    private Reviews review;  // Review 엔티티와 연결 (NULL 가능)
+    private Review review;  // Review 엔티티와 연결 (NULL 가능)
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id")
