@@ -15,7 +15,7 @@ public class LikeTable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "like_id")
-    private Long id;
+    private Integer likeId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "info_id", nullable = false)
@@ -23,7 +23,7 @@ public class LikeTable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "review_id")
-    private Reviews review;  // Review 엔티티와 연결 (NULL 가능)
+    private Review review;  // Review 엔티티와 연결 (NULL 가능)
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id")

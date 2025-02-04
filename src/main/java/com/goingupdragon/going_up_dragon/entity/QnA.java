@@ -16,7 +16,7 @@ public class QnA {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "qna_id")
-    private Long id;
+    private Integer qnaId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "info_id", nullable = false)
