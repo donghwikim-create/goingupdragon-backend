@@ -22,19 +22,19 @@ public class LikeService {
     }
 
     public List<CourseLikeDTO> getLikesForCourse(Integer courseId) {
-        return likeTableRepository.findByCourse_CourseId(courseId).stream()
+        return likeTableRepository.findByCourse(courseId).stream()
                 .map(like -> new CourseLikeDTO(like.getLikeId(), like.getUser().getInfoId(), like.getCourse().getCourseId()))
                 .collect(Collectors.toList());
     }
 
     public List<ReviewLikeDTO> getLikesForReview(Integer reviewId) {
-        return likeTableRepository.findByReview_ReviewId(reviewId).stream()
+        return likeTableRepository.findByReview(reviewId).stream()
                 .map(like -> new ReviewLikeDTO(like.getLikeId(), like.getUser().getInfoId(), like.getReview().getReviewId()))
                 .collect(Collectors.toList());
     }
 
     public List<QnALikeDTO> getLikesForQnA(Integer qnaId) {
-        return likeTableRepository.findByQna_QnaId(qnaId).stream()
+        return likeTableRepository.findByQnA(qnaId).stream()
                 .map(like -> new QnALikeDTO(like.getLikeId(), like.getUser().getInfoId(), like.getQna().getQnaId()))
                 .collect(Collectors.toList());
     }
