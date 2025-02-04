@@ -4,6 +4,7 @@ import com.goingupdragon.going_up_dragon.enums.Enums;
 import jakarta.persistence.*;
 import lombok.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "user_info")
@@ -36,5 +37,8 @@ public class UserInfo implements Serializable {
 
     @Column(length = 255)
     private String profileAddress;
+
+    @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SearchLog> searchLogs;
 }
 

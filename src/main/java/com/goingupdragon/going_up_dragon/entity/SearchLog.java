@@ -1,10 +1,7 @@
 package com.goingupdragon.going_up_dragon.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -14,22 +11,26 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class SearchLog {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  // auto increment 설정
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto Increment
     @Column(name = "search_log_id")
     private Long searchLogId;
 
-    @Column(name = "info_id")
-    private Integer infoId;
+    @ManyToOne
+    @JoinColumn(name = "info_id", nullable = true) // 외래 키
+    private UserInfo userInfo;
 
-    @Column(name = "search_query", length = 255)
+    @Column(name = "search_query", length = 255, nullable = false)
     private String searchQuery;
 
-    @Column(name = "search_category", length = 255)
+    @Column(name = "search_category", length = 255, nullable = false)
     private String searchCategory;
 
-    @Column(name = "search_time")
+    @Column(name = "search_time", nullable = false)
     private LocalDateTime searchTime;
 }
+
+
