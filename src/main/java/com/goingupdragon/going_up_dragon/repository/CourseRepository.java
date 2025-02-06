@@ -14,5 +14,5 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
     Course findCourse (@Param("courseId") Integer courseId);
 
     @Query ("SELECT c FROM Course c WHERE c.instructor.infoId = :infoId")
-    List<Course> findInstructorCourse (@Param("infoId")Integer infoId);
+    List<Course> findInstructorCourses (@Param("infoId")Integer infoId);
 }
