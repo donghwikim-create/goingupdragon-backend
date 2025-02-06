@@ -16,4 +16,17 @@ public interface ReviewRepository extends JpaRepository<Review, Integer>{
 
     @Query("SELECT COALESCE(AVG(r.rate), 0) FROM Review r WHERE r.course.courseId = :courseId")
     Float findReviewRate(@Param("courseId") Integer courseId);
+
+    @Query(value = """
+    SELECT course_id 
+    FROM review 
+    WHERE course_id NOT IN (
+        SELECT e.course_id FROM enrollments e WHERE e.info_id = :infoId
+    )
+    GROUP BY course_id 
+    HAVING AVG(rate) >= 3.5 
+    ORDER BY RAND() 
+    LIMIT :limit
+    """, nativeQuery = true)
+    List<Integer> findCourseIdsWithHighRating( @Param("infoId") int infoId, @Param("limit") int limit);
 }

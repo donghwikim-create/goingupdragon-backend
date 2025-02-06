@@ -29,4 +29,5 @@ public class CourseDTO {
     private LocalDateTime startDate;
     private Integer reviewCount;
     private Float rate;
+    private Long enrollmentCount;
 }
