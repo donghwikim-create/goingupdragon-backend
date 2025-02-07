@@ -32,13 +32,13 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
     List<Course> findFreeCoursesExcludingEnrolled(@Param("infoId") int infoId, @Param("limit") int limit);
 
     @Query(value = """
-        SELECT * FROM courses 
-    WHERE level = :level
+    SELECT * FROM courses
+    WHERE level = :#{#level.toString()}
     AND course_id NOT IN (
         SELECT e.course_id FROM enrollments e WHERE e.info_id = :infoId
     )
-    ORDER BY RAND() 
+    ORDER BY RAND()
     LIMIT :limit
-    """, nativeQuery = true)
+""", nativeQuery = true)
     List<Course> findCoursesByLevel(@Param("level") Enums.CourseLevel level, @Param("infoId") int infoId, @Param("limit") int limit);
 }
