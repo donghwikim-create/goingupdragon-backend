@@ -36,6 +36,12 @@ public class SearchLogController {
         List<String> suggestions = searchLogService.getSuggestions(searchQuery);
         return ResponseEntity.ok(suggestions);
     }
+
+//    @GetMapping("/suggest")
+//    public ResponseEntity<List<String>> getSuggestions(@RequestParam String searchQuery) {
+//        List<String> suggestions = searchLogService.getSuggestions(searchQuery);
+//        return ResponseEntity.ok(suggestions);
+//    }
 }
 
 

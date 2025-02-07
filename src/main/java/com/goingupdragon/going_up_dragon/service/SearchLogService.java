@@ -43,6 +43,7 @@
 package com.goingupdragon.going_up_dragon.service;
 
 import co.elastic.clients.elasticsearch._types.aggregations.AggregationBuilders;
+import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import com.goingupdragon.going_up_dragon.entity.SearchLog;
 import com.goingupdragon.going_up_dragon.entity.SearchLogElasticsearch;
 import com.goingupdragon.going_up_dragon.entity.UserInfo;
