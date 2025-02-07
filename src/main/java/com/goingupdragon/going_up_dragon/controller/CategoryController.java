@@ -84,4 +84,6 @@ public class CategoryController {
                     .body("An error occurred while fetching categories: " + e.getMessage());
         }
     }
+
+
 }
