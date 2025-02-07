@@ -9,6 +9,9 @@ import com.goingupdragon.going_up_dragon.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -65,13 +68,27 @@ public class CourseService {
 
 
     public List<CourseDTO> getEasyCoursesNotEnrolled(Enums.CourseLevel courseLevel, int infoId, int limit){
-        log.info("Fetching easy courses - Level: {}, InfoId: {}, Limit: {}", courseLevel, infoId, limit);
         List<Course> courseList = courseRepository.findCoursesByLevel(courseLevel,infoId, limit);
 
         return courseList.stream()
                 .map(this::convertToDTO) // ✅ DTO 변환
                 .collect(Collectors.toList());
     }
+
+    public Page<CourseDTO> getCoursesByFiltersAndSort(Enums.CourseLevel level, Enums.CourseLanguage language, String timeFilter, String sortBy, int size, int offset) {
+        List<Course> courseList = courseRepository.findCoursesByFilters(level, language, timeFilter, sortBy, size, offset);
+
+        List<CourseDTO> courseDTOList = courseList.stream()
+                .map(this::convertToDTO) // ✅ DTO 변환
+                .collect(Collectors.toList());
+
+        // 총 개수 조회
+        int totalCourses = (int) courseRepository.countCoursesByFilters(level, language, timeFilter);
+
+        // Page 객체로 변환
+        return new PageImpl<>(courseDTOList, PageRequest.of(offset / size, size), totalCourses);
+    }
+
 
     public CourseDTO convertToDTO(Course course){
 
