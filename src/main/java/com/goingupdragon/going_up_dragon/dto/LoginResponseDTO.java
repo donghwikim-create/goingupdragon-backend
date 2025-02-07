@@ -10,5 +10,5 @@ import lombok.Setter;
 public class LoginResponseDTO {
     private boolean success;
     private String message;
-    private String token;  // JWT를 사용할 경우
+    private String token;  // 🔹 JWT 토큰 필드 추가
 }

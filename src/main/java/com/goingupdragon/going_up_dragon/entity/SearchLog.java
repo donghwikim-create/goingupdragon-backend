@@ -26,7 +26,7 @@ public class SearchLog {
     @Column(name = "search_query", length = 255, nullable = false)
     private String searchQuery;
 
-    @Column(name = "search_category", length = 255, nullable = false)
+    @Column(name = "search_category", length = 255, nullable = true)
     private String searchCategory;
 
     @Column(name = "search_time", nullable = false)

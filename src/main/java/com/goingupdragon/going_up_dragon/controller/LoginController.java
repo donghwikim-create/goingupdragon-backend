@@ -3,6 +3,7 @@ package com.goingupdragon.going_up_dragon.controller;
 import com.goingupdragon.going_up_dragon.dto.LoginRequestDTO;
 import com.goingupdragon.going_up_dragon.dto.LoginResponseDTO;
 import com.goingupdragon.going_up_dragon.service.LoginService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
