@@ -1,6 +1,9 @@
 package com.goingupdragon.going_up_dragon.controller;
 
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import com.goingupdragon.going_up_dragon.dto.CourseDTO;
 import com.goingupdragon.going_up_dragon.dto.like.CourseLikeDTO;
 import com.goingupdragon.going_up_dragon.enums.Enums;
@@ -100,6 +103,25 @@ public class CourseController {
 
         Enums.CourseLevel level = Enums.CourseLevel.valueOf(courseLevel);
         List<CourseDTO> courses = courseService.getEasyCoursesNotEnrolled(level, infoId, limit);
+        return ResponseEntity.ok(courses);
+    }
+
+    @Operation(summary = "필터 및 정렬 조건으로 강의 목록 조회", description = "레벨, 언어, 시간 필터, 정렬 조건을 기반으로 강의 목록을 조회합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공적으로 강의 목록을 조회함"),
+            @ApiResponse(responseCode = "400", description = "잘못된 필터 값 제공"),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
+    })
+    @GetMapping("/filtered")
+    public ResponseEntity<Page<CourseDTO>> getCoursesByFiltersAndSort(
+            @RequestParam(required = false) Enums.CourseLevel level,
+            @RequestParam(required = false) Enums.CourseLanguage language,
+            @RequestParam(required = false) String timeFilter,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "0") int offset) {
+
+        Page<CourseDTO> courses = courseService.getCoursesByFiltersAndSort(level, language, timeFilter, sortBy, size, offset);
         return ResponseEntity.ok(courses);
     }
 }
