@@ -42,17 +42,12 @@
 
 package com.goingupdragon.going_up_dragon.service;
 
-import co.elastic.clients.elasticsearch._types.aggregations.AggregationBuilders;
-import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import com.goingupdragon.going_up_dragon.entity.SearchLog;
 import com.goingupdragon.going_up_dragon.entity.SearchLogElasticsearch;
 import com.goingupdragon.going_up_dragon.entity.UserInfo;
 import com.goingupdragon.going_up_dragon.repository.SearchLogRepository;
 import com.goingupdragon.going_up_dragon.repository.SearchLogElasticsearchRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
-import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
