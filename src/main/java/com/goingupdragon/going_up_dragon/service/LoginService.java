@@ -19,7 +19,7 @@ public class LoginService {
 
     private final UserSecurityRepository userSecurityRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtUtil jwtUtil; // 🔹 JWT 유틸 추가
+    private final JwtUtil jwtUtil;
     private final UserInfoRepository userInfoRepository;
 
     public LoginResponseDTO login(LoginRequestDTO loginRequest) {
@@ -28,13 +28,18 @@ public class LoginService {
                 .orElseThrow(() -> new RuntimeException("유효하지 않은 사용자입니다."));
 
         // 2️⃣ 비밀번호 검증 (암호화된 비밀번호와 비교)
-        if (!passwordEncoder.matches(loginRequest.getPassword(), userSecurity.getPassword())) { // ✅ 암호화된 비밀번호 비교
-            return new LoginResponseDTO(false, "비밀번호가 일치하지 않습니다.", null);
+        if (!passwordEncoder.matches(loginRequest.getPassword(), userSecurity.getPassword())) {
+            return new LoginResponseDTO(false, "비밀번호가 일치하지 않습니다.", null, null, null);
         }
 
-        // 3️⃣ JWT 토큰 생성 및 반환
+        // 3️⃣ UserInfo에서 닉네임과 역할 조회
+        UserInfo userInfo = userInfoRepository.findByUser(userSecurity)
+                .orElseThrow(() -> new RuntimeException("사용자 정보가 없습니다."));
+
+        // 4️⃣ JWT 토큰 생성 및 반환
         String token = jwtUtil.generateToken(userSecurity.getEmail());
-        return new LoginResponseDTO(true, "로그인 성공", token);
+
+        return new LoginResponseDTO(true, "로그인 성공", token, userInfo.getNickname(), userInfo.getRole());
     }
 }
 

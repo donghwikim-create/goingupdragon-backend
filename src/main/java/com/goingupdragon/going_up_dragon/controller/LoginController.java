@@ -25,11 +25,11 @@ public class LoginController {
             if (response.isSuccess()) {
                 return ResponseEntity.ok(response);
             } else {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response); // Return 401 on failed login
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new LoginResponseDTO(false, "서버 오류가 발생했습니다.", null));
+                    .body(new LoginResponseDTO(false, "서버 오류가 발생했습니다.", null, null, null));
         }
     }
 }
