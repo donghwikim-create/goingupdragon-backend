@@ -130,8 +130,8 @@ public class SearchLogService {
                 .sorted(Comparator.comparingInt(SearchLogElasticsearch::getFrequency).reversed()) // 빈도순 정렬
                 .map(SearchLogElasticsearch::getSearchQuery)
                 .distinct()
+                .limit(5) // 최대 5개 제한
                 .collect(Collectors.toList());
     }
-
 }
 
