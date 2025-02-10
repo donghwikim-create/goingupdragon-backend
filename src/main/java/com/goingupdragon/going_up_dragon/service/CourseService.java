@@ -75,15 +75,15 @@ public class CourseService {
                 .collect(Collectors.toList());
     }
 
-    public Page<CourseDTO> getCoursesByFiltersAndSort(Enums.CourseLevel level, Enums.CourseLanguage language, String timeFilter, String sortBy, int size, int offset) {
-        List<Course> courseList = courseRepository.findCoursesByFilters(level, language, timeFilter, sortBy, size, offset);
+    public Page<CourseDTO> getCoursesByFiltersAndSort(int mainCategory, int subCategory, Enums.CourseLevel level, Enums.CourseLanguage language, String timeFilter, List<Integer> selectedTags, String sortBy, int size, int offset) {
+        List<Course> courseList = courseRepository.findCoursesByFiltersAndSort(mainCategory, subCategory, level, language, timeFilter, selectedTags, sortBy, size, offset);
 
         List<CourseDTO> courseDTOList = courseList.stream()
                 .map(this::convertToDTO) // ✅ DTO 변환
                 .collect(Collectors.toList());
 
         // 총 개수 조회
-        int totalCourses = (int) courseRepository.countCoursesByFilters(level, language, timeFilter);
+        int totalCourses = (int) courseRepository.countCoursesByFilters(mainCategory, subCategory, level, language, timeFilter, selectedTags);
 
         // Page 객체로 변환
         return new PageImpl<>(courseDTOList, PageRequest.of(offset / size, size), totalCourses);

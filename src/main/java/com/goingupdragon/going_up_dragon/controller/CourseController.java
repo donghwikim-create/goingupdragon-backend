@@ -14,7 +14,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/courses")
@@ -105,23 +108,29 @@ public class CourseController {
         List<CourseDTO> courses = courseService.getEasyCoursesNotEnrolled(level, infoId, limit);
         return ResponseEntity.ok(courses);
     }
-
-    @Operation(summary = "필터 및 정렬 조건으로 강의 목록 조회", description = "레벨, 언어, 시간 필터, 정렬 조건을 기반으로 강의 목록을 조회합니다.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "성공적으로 강의 목록을 조회함"),
-            @ApiResponse(responseCode = "400", description = "잘못된 필터 값 제공"),
-            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
-    })
     @GetMapping("/filtered")
     public ResponseEntity<Page<CourseDTO>> getCoursesByFiltersAndSort(
-            @RequestParam(required = false) Enums.CourseLevel level,
-            @RequestParam(required = false) Enums.CourseLanguage language,
+            @RequestParam(defaultValue = "0") Integer mainCategory,
+            @RequestParam(defaultValue = "0") Integer subCategory,
+            @RequestParam(defaultValue = "모두") Enums.CourseLevel level,
+            @RequestParam(defaultValue = "모두") Enums.CourseLanguage language,
             @RequestParam(required = false) String timeFilter,
             @RequestParam(required = false) String sortBy,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "0") int offset) {
+            @RequestParam(defaultValue = "0") int offset,
+            @RequestParam(required = false) List<Integer> selectedTags
+    ) {
 
-        Page<CourseDTO> courses = courseService.getCoursesByFiltersAndSort(level, language, timeFilter, sortBy, size, offset);
+        // ✅ selectedTags가 null이면 빈 리스트로 변환
+        List<Integer> safeSelectedTags = Optional.ofNullable(selectedTags)
+                .orElse(Collections.emptyList())
+                .stream()
+                .filter(Objects::nonNull) // ✅ 리스트 내부의 null 값 제거
+                .toList();
+
+        Page<CourseDTO> courses = courseService.getCoursesByFiltersAndSort(
+                mainCategory, subCategory, level, language, timeFilter, selectedTags, sortBy, size, offset
+        );
         return ResponseEntity.ok(courses);
     }
 }

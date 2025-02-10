@@ -14,11 +14,11 @@ public class Enums {
     }
 
     public enum CourseLevel {
-        입문, 중급, 고급
+        입문, 중급, 고급, 모두
     }
 
     public enum CourseLanguage {
-        한국어, 영어, 일본어
+        한국어, 영어, 일본어, 모두
     }
 
     public enum EnrollmentStatus {
