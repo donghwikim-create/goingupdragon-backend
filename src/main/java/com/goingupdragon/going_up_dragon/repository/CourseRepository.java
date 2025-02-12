@@ -102,11 +102,11 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
 
 
     @Query(value = """
-    SELECT c.* 
+    SELECT c.*, 
+        (SELECT COUNT(*) FROM enrollments e WHERE e.course_id = c.course_id) AS enroll_count,
+        (SELECT AVG(r.rate) FROM review r WHERE r.course_id = c.course_id) AS avg_rating,
+        (SELECT COUNT(*) FROM like_table l WHERE l.course_id = c.course_id) AS like_count
     FROM courses c
-    LEFT JOIN enrollments e ON e.course_id = c.course_id
-    LEFT JOIN review r ON r.course_id = c.course_id
-    LEFT JOIN like_table l ON l.course_id = c.course_id
     WHERE (:mainCategory = 0 OR c.main_category_id = :mainCategory)
       AND (:subCategory = 0 OR c.sub_category_id = :subCategory)
       AND (:#{#level.toString()} = '모두' OR c.level = :#{#level.toString()})
@@ -123,35 +123,31 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
             OR c.subject_tag2 IN (:selectedTags) 
             OR c.subject_tag3 IN (:selectedTags)
         )
-    GROUP BY c.course_id
     ORDER BY 
         CASE 
             WHEN :sortBy = 'latest' THEN c.start_date
-            WHEN :sortBy = 'popularity' THEN COUNT(e.course_id)
-            WHEN :sortBy = 'rating' THEN AVG(r.rate)
-            WHEN :sortBy = 'likes' THEN COUNT(l.course_id)
+            WHEN :sortBy = 'popularity' THEN enroll_count
+            WHEN :sortBy = 'rating' THEN avg_rating
+            WHEN :sortBy = 'likes' THEN like_count
             ELSE c.course_id
         END DESC
     LIMIT :size OFFSET :offset
-""", nativeQuery = true)
+    """, nativeQuery = true)
     List<Course> findCoursesByFiltersAndSort(
             @Param("mainCategory") Integer mainCategory,
             @Param("subCategory") Integer subCategory,
             @Param("level") Enums.CourseLevel level,
             @Param("language") Enums.CourseLanguage language,
             @Param("timeFilter") String timeFilter,
-            @Param("selectedTags") List<Integer> selectedTags,  // ✅ 태그 필터 추가
+            @Param("selectedTags") List<Integer> selectedTags,
             @Param("sortBy") String sortBy,
             @Param("size") int size,
             @Param("offset") int offset
     );
 
     @Query(value = """
-    SELECT COUNT(DISTINCT c.course_id)
+    SELECT COUNT(*)
     FROM courses c
-    LEFT JOIN enrollments e ON e.course_id = c.course_id
-    LEFT JOIN review r ON r.course_id = c.course_id
-    LEFT JOIN like_table l ON l.course_id = c.course_id
     WHERE (:mainCategory = 0 OR c.main_category_id = :mainCategory)
       AND (:subCategory = 0 OR c.sub_category_id = :subCategory)
       AND (:#{#level.toString()} = '모두' OR c.level = :#{#level.toString()})
@@ -168,14 +164,14 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
             OR c.subject_tag2 IN (:selectedTags) 
             OR c.subject_tag3 IN (:selectedTags)
         )
-""", nativeQuery = true)
+    """, nativeQuery = true)
     int countCoursesByFilters(
             @Param("mainCategory") Integer mainCategory,
             @Param("subCategory") Integer subCategory,
             @Param("level") Enums.CourseLevel level,
             @Param("language") Enums.CourseLanguage language,
             @Param("timeFilter") String timeFilter,
-            @Param("selectedTags") List<Integer> selectedTags // ✅ 태그 필터 추가
+            @Param("selectedTags") List<Integer> selectedTags
     );
 
 
