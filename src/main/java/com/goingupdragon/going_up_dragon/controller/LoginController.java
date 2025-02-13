@@ -29,7 +29,7 @@ public class LoginController {
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new LoginResponseDTO(false, "서버 오류가 발생했습니다.", null, null, null));
+                    .body(new LoginResponseDTO(false, "서버 오류가 발생했습니다.", null, null, null, null));
         }
     }
 }

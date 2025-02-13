@@ -29,7 +29,7 @@ public class LoginService {
 
         // 2️⃣ 비밀번호 검증 (암호화된 비밀번호와 비교)
         if (!passwordEncoder.matches(loginRequest.getPassword(), userSecurity.getPassword())) {
-            return new LoginResponseDTO(false, "비밀번호가 일치하지 않습니다.", null, null, null);
+            return new LoginResponseDTO(false, "비밀번호가 일치하지 않습니다.", null, null, null, null);
         }
 
         // 3️⃣ UserInfo에서 닉네임과 역할 조회
@@ -38,8 +38,7 @@ public class LoginService {
 
         // 4️⃣ JWT 토큰 생성 및 반환
         String token = jwtUtil.generateToken(userSecurity.getEmail());
-
-        return new LoginResponseDTO(true, "로그인 성공", token, userInfo.getNickname(), userInfo.getRole());
+        return new LoginResponseDTO(true, "로그인 성공", token, userInfo.getNickname(), userInfo.getRole(), userInfo.getInfoId());
     }
 }
 
