@@ -100,12 +100,11 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
 //            @Param("timeFilter") String timeFilter
 //    );
 
-
     @Query(value = """
     SELECT c.*, 
-        (SELECT COUNT(*) FROM enrollments e WHERE e.course_id = c.course_id) AS enroll_count,
-        (SELECT AVG(r.rate) FROM review r WHERE r.course_id = c.course_id) AS avg_rating,
-        (SELECT COUNT(*) FROM like_table l WHERE l.course_id = c.course_id) AS like_count
+        (SELECT IFNULL(COUNT(*), 0) FROM enrollments e WHERE e.course_id = c.course_id) AS enroll_count,
+        (SELECT IFNULL(AVG(r.rate), 0) FROM review r WHERE r.course_id = c.course_id) AS avg_rating,
+        (SELECT IFNULL(COUNT(*), 0) FROM like_table l WHERE l.course_id = c.course_id) AS like_count
     FROM courses c
     WHERE (:mainCategory = 0 OR c.main_category_id = :mainCategory)
       AND (:subCategory = 0 OR c.sub_category_id = :subCategory)
@@ -113,9 +112,9 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
       AND (:#{#language.toString()} = '모두' OR c.language = :#{#language.toString()})
       AND (
             (:timeFilter IS NULL)
-            OR (:timeFilter = 'short' AND c.duration BETWEEN 0 AND 32400) 
-            OR (:timeFilter = 'medium' AND c.duration BETWEEN 32421 AND 100800) 
-            OR (:timeFilter = 'long' AND c.duration > 100800)
+            OR (:timeFilter = 'short' AND c.duration BETWEEN 0 AND 36000) 
+            OR (:timeFilter = 'medium' AND c.duration BETWEEN 36001 AND 144000) 
+            OR (:timeFilter = 'long' AND c.duration > 144000)
         )
       AND (
             :selectedTags IS NULL 
@@ -124,13 +123,11 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
             OR c.subject_tag3 IN (:selectedTags)
         )
     ORDER BY 
-        CASE 
-            WHEN :sortBy = 'latest' THEN c.start_date
-            WHEN :sortBy = 'popularity' THEN enroll_count
-            WHEN :sortBy = 'rating' THEN avg_rating
-            WHEN :sortBy = 'likes' THEN like_count
-            ELSE c.course_id
-        END DESC
+        CASE WHEN :sortBy = 'latest' THEN c.start_date END DESC,
+        CASE WHEN :sortBy = 'popularity' THEN enroll_count END DESC,
+        CASE WHEN :sortBy = 'rating' THEN avg_rating END DESC,
+        CASE WHEN :sortBy = 'likes' THEN like_count END DESC,
+        c.course_id DESC
     LIMIT :size OFFSET :offset
     """, nativeQuery = true)
     List<Course> findCoursesByFiltersAndSort(
@@ -173,6 +170,4 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
             @Param("timeFilter") String timeFilter,
             @Param("selectedTags") List<Integer> selectedTags
     );
-
-
 }
