@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -75,7 +76,8 @@ public class CourseService {
                 .collect(Collectors.toList());
     }
 
-    public Page<CourseDTO> getCoursesByFiltersAndSort(int mainCategory, int subCategory, Enums.CourseLevel level, Enums.CourseLanguage language, String timeFilter, List<Integer> selectedTags, String sortBy, int size, int offset) {
+    public Page<CourseDTO> getCoursesByFiltersAndSort(int mainCategory, int subCategory, Enums.CourseLevel level, Enums.CourseLanguage language, String timeFilter, Collection<Integer> selectedTags, String sortBy, int size, int offset) {
+
         List<Course> courseList = courseRepository.findCoursesByFiltersAndSort(mainCategory, subCategory, level, language, timeFilter, selectedTags, sortBy, size, offset);
 
         List<CourseDTO> courseDTOList = courseList.stream()

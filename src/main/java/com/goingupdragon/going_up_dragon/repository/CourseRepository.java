@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 
 @Repository
@@ -101,7 +102,7 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
 //    );
 
     @Query(value = """
-    SELECT c.*, 
+    SELECT c.*,
         (SELECT IFNULL(COUNT(*), 0) FROM enrollments e WHERE e.course_id = c.course_id) AS enroll_count,
         (SELECT IFNULL(AVG(r.rate), 0) FROM review r WHERE r.course_id = c.course_id) AS avg_rating,
         (SELECT IFNULL(COUNT(*), 0) FROM like_table l WHERE l.course_id = c.course_id) AS like_count
@@ -112,17 +113,17 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
       AND (:#{#language.toString()} = '모두' OR c.language = :#{#language.toString()})
       AND (
             (:timeFilter IS NULL)
-            OR (:timeFilter = 'short' AND c.duration BETWEEN 0 AND 36000) 
-            OR (:timeFilter = 'medium' AND c.duration BETWEEN 36001 AND 144000) 
+            OR (:timeFilter = 'short' AND c.duration BETWEEN 0 AND 36000)
+            OR (:timeFilter = 'medium' AND c.duration BETWEEN 36001 AND 144000)
             OR (:timeFilter = 'long' AND c.duration > 144000)
         )
       AND (
-            :selectedTags IS NULL 
-            OR c.subject_tag1 IN (:selectedTags) 
-            OR c.subject_tag2 IN (:selectedTags) 
+            :selectedTags IS NULL
+            OR c.subject_tag1 IN (:selectedTags)
+            OR c.subject_tag2 IN (:selectedTags)
             OR c.subject_tag3 IN (:selectedTags)
         )
-    ORDER BY 
+    ORDER BY
         CASE WHEN :sortBy = 'latest' THEN c.start_date END DESC,
         CASE WHEN :sortBy = 'popularity' THEN enroll_count END DESC,
         CASE WHEN :sortBy = 'rating' THEN avg_rating END DESC,
@@ -136,7 +137,7 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
             @Param("level") Enums.CourseLevel level,
             @Param("language") Enums.CourseLanguage language,
             @Param("timeFilter") String timeFilter,
-            @Param("selectedTags") List<Integer> selectedTags,
+            @Param("selectedTags") Collection<Integer> selectedTags,
             @Param("sortBy") String sortBy,
             @Param("size") int size,
             @Param("offset") int offset
@@ -151,14 +152,14 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
       AND (:#{#language.toString()} = '모두' OR c.language = :#{#language.toString()})
       AND (
             (:timeFilter IS NULL)
-            OR (:timeFilter = 'short' AND c.duration BETWEEN 0 AND 32400) 
-            OR (:timeFilter = 'medium' AND c.duration BETWEEN 32421 AND 100800) 
-            OR (:timeFilter = 'long' AND c.duration > 100800)
+            OR (:timeFilter = 'short' AND c.duration BETWEEN 0 AND 36000)
+            OR (:timeFilter = 'medium' AND c.duration BETWEEN 36001 AND 144000)
+            OR (:timeFilter = 'long' AND c.duration > 144000)
         )
       AND (
-            :selectedTags IS NULL 
-            OR c.subject_tag1 IN (:selectedTags) 
-            OR c.subject_tag2 IN (:selectedTags) 
+            :selectedTags IS NULL
+            OR c.subject_tag1 IN (:selectedTags)
+            OR c.subject_tag2 IN (:selectedTags)
             OR c.subject_tag3 IN (:selectedTags)
         )
     """, nativeQuery = true)
@@ -168,6 +169,6 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
             @Param("level") Enums.CourseLevel level,
             @Param("language") Enums.CourseLanguage language,
             @Param("timeFilter") String timeFilter,
-            @Param("selectedTags") List<Integer> selectedTags
+            @Param("selectedTags") Collection<Integer> selectedTags
     );
 }
