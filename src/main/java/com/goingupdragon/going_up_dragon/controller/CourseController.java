@@ -14,10 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/courses")
@@ -118,15 +115,9 @@ public class CourseController {
             @RequestParam(required = false) String sortBy,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "0") int offset,
-            @RequestParam(required = false) List<Integer> selectedTags
+            @RequestParam(required = false) Collection<Integer> selectedTags
     ) {
-
-        // ✅ selectedTags가 null이면 빈 리스트로 변환
-        List<Integer> safeSelectedTags = Optional.ofNullable(selectedTags)
-                .orElse(Collections.emptyList())
-                .stream()
-                .filter(Objects::nonNull) // ✅ 리스트 내부의 null 값 제거
-                .toList();
+        System.out.println("Received selectedTags: " + selectedTags);
 
         Page<CourseDTO> courses = courseService.getCoursesByFiltersAndSort(
                 mainCategory, subCategory, level, language, timeFilter, selectedTags, sortBy, size, offset
