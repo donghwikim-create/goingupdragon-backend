@@ -30,4 +30,5 @@ public class CourseDTO {
     private Integer reviewCount;
     private Float rate;
     private Long enrollmentCount;
+    private Integer duration;
 }
