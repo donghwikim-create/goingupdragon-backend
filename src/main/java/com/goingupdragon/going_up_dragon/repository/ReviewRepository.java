@@ -29,4 +29,7 @@ public interface ReviewRepository extends JpaRepository<Review, Integer>{
     LIMIT :limit
     """, nativeQuery = true)
     List<Integer> findCourseIdsWithHighRating( @Param("infoId") int infoId, @Param("limit") int limit);
+
+    @Query("SELECT r FROM Review r WHERE r.course.instructor.infoId = :infoId")
+    List<Review> findInstructorReviews(@Param("infoId") Integer infoId);
 }

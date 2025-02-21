@@ -8,5 +8,6 @@ import java.util.Optional;
 public interface UserInfoRepository extends JpaRepository<UserInfo, Integer> {
     Optional<UserInfo> findByNickname(String nickname); // nickName ❌ → nickname ✅
     Optional<UserInfo> findByUser(UserSecurity userSecurity);
+    UserInfo findByInfoId(Integer infoId);
 }
 
