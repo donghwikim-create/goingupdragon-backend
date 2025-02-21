@@ -117,7 +117,8 @@ public class CourseService {
                 averageRating = (averageRating != null)
                         ? (float) ((int) (averageRating * 10) / 10.0)  // 소수점 첫째 자리만 유지
                         : 0.0f,
-                count != null ? count : 0
+                count != null ? count : 0,
+                course.getDuration()
                 );
     }
 }

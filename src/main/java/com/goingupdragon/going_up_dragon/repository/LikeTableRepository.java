@@ -25,6 +25,9 @@ public interface LikeTableRepository extends JpaRepository<LikeTable, Integer> {
     @Query("SELECT l FROM LikeTable l WHERE l.qna.qnaId = :qnaId")
     List<LikeTable> findByQnA(@Param("qnaId") Integer qnaId);
 
+    @Query("SELECT COUNT(l) FROM LikeTable l WHERE l.qna.qnaId = :qnaId")
+    Integer countLikesByQnAId(@Param("qnaId") Integer qnaId);
+
 
     // ✅ 특정 유저가 특정 Course에 좋아요를 눌렀는지 확인
     @Query("SELECT COUNT(l) > 0 FROM LikeTable l WHERE l.user.infoId = :infoId AND l.course.courseId = :courseId")
