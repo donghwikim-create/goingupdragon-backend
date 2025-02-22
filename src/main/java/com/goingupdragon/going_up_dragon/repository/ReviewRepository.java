@@ -32,4 +32,8 @@ public interface ReviewRepository extends JpaRepository<Review, Integer>{
 
     @Query("SELECT r FROM Review r WHERE r.course.instructor.infoId = :infoId")
     List<Review> findInstructorReviews(@Param("infoId") Integer infoId);
+
+    @Query(value = "SELECT * FROM review WHERE course_id IN (SELECT course_id FROM courses WHERE info_id = :infoId) LIMIT 5", nativeQuery = true)
+    List<Review> findInstructorSampleReviews(@Param("infoId") Integer infoId);
+
 }
