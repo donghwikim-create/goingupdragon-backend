@@ -85,4 +85,13 @@ public class QnAService {
                 .collect(Collectors.toList());
     }
 
+    public Integer getInstructorQnACount(Integer infoId){
+        return qnaRepository.countInstructorQnAs(infoId);
+    }
+
+    public List<QnADTO> getInstructorQnAList(Integer infoId){
+        List<QnA> qnaList = qnaRepository.findInstructorQnAs(infoId);
+
+        return qnaList.stream().map(this::convertToQnADTO).collect(Collectors.toList());
+    }
 }

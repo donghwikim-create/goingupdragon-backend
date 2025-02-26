@@ -33,7 +33,23 @@ public interface ReviewRepository extends JpaRepository<Review, Integer>{
     @Query("SELECT r FROM Review r WHERE r.course.instructor.infoId = :infoId")
     List<Review> findInstructorReviews(@Param("infoId") Integer infoId);
 
+    @Query("SELECT COUNT(r) FROM Review r WHERE r.course.instructor.infoId = :infoId")
+    Integer countInstructorReviews(@Param("infoId") Integer infoId);
+
     @Query(value = "SELECT * FROM review WHERE course_id IN (SELECT course_id FROM courses WHERE info_id = :infoId) LIMIT 5", nativeQuery = true)
     List<Review> findInstructorSampleReviews(@Param("infoId") Integer infoId);
 
+    @Query("SELECT COALESCE(AVG(r.rate), 0) FROM Review r WHERE r.course.instructor.infoId = :infoId")
+    Float findInstructorReviewRate(@Param("infoId") Integer infoId);
+
+    @Query("SELECT r FROM Review r WHERE r.user.infoId = :infoId")
+    List<Review> findReviewsByUserId(@Param("infoId") Integer infoId);
+
+    // 학생이 작성한 리뷰 평균 평점 조회
+    @Query("SELECT COALESCE(AVG(r.rate), 0) FROM Review r WHERE r.user.infoId = :infoId")
+    Float findReviewRateByUserId(@Param("infoId") Integer infoId);
+
+    // 학생이 작성한 리뷰 개수 조회
+    @Query("SELECT COUNT(r) FROM Review r WHERE r.user.infoId = :infoId")
+    Integer findReviewCountByUserId(@Param("infoId") Integer infoId);
 }

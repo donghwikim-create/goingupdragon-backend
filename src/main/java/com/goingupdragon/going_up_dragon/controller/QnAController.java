@@ -69,5 +69,17 @@ public class QnAController {
         return ResponseEntity.ok(replies);
     }
 
+    @GetMapping("/count/instructor/{instructorId}")
+    public ResponseEntity<Integer> getInstructorQnACount(@PathVariable Integer instructorId) {
+        Integer count = qnaService.getInstructorQnACount(instructorId);
+        return ResponseEntity.ok(count);
+    }
+
+    // ✅ 강사의 QnA 리스트 조회 API
+    @GetMapping("/instructor/{infoId}")
+    public ResponseEntity<List<QnADTO>> getInstructorQnAList(@PathVariable Integer infoId) {
+        List<QnADTO> qnaList = qnaService.getInstructorQnAList(infoId);
+        return ResponseEntity.ok(qnaList);
+    }
 }
 

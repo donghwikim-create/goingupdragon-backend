@@ -1,5 +1,6 @@
 package com.goingupdragon.going_up_dragon.controller;
 
+import com.goingupdragon.going_up_dragon.dto.ReviewsDTO;
 import com.goingupdragon.going_up_dragon.service.ReviewService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -46,5 +47,24 @@ public class ReviewController {
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("An error occurred while fetching reviews: " + e.getMessage());
         }
+    }
+
+    @GetMapping("/count/instructor/{instructorId}")
+    public ResponseEntity<Integer> getInstructorReviewCount(@PathVariable Integer instructorId) {
+        Integer count = reviewService.getInstructorReviewCount(instructorId);
+        return ResponseEntity.ok(count);
+    }
+
+    @GetMapping("/rate/instructor/{instructorId}")
+    public ResponseEntity<Float> getInstructorRate(@PathVariable Integer instructorId) {
+        Float rate = reviewService.getInstructorRate(instructorId);
+        return ResponseEntity.ok(rate);
+    }
+
+    // ✅ 강사의 수강평 리스트 조회 API
+    @GetMapping("/instructor/{infoId}")
+    public ResponseEntity<List<ReviewsDTO>> getInstructorReviews(@PathVariable Integer infoId) {
+        List<ReviewsDTO> reviews = reviewService.findInstructorReviews(infoId);
+        return ResponseEntity.ok(reviews);
     }
 }

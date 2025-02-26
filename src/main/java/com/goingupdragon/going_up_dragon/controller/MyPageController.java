@@ -1,6 +1,7 @@
 package com.goingupdragon.going_up_dragon.controller;
 
 import com.goingupdragon.going_up_dragon.dto.myPage.MyPageInstructorDTO;
+import com.goingupdragon.going_up_dragon.dto.myPage.MyPageStudentDTO;
 import com.goingupdragon.going_up_dragon.service.MyPageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -48,5 +49,11 @@ public class MyPageController {
     public ResponseEntity<MyPageInstructorDTO> getInstructorSampleMyPage(@PathVariable Integer infoId) {
         MyPageInstructorDTO instructorDTO = myPageService.GetMyPageInstructorSampleDTO(infoId);
         return ResponseEntity.ok(instructorDTO);
+    }
+
+    @GetMapping("/student/{studentId}")
+    public ResponseEntity<MyPageStudentDTO> getStudentMyPage(@PathVariable("studentId") Integer studentId) {
+        MyPageStudentDTO myPageStudentDTO = myPageService.GetMyPageStudentDTO(studentId);
+        return ResponseEntity.ok(myPageStudentDTO);
     }
 }

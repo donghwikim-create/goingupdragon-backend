@@ -91,6 +91,18 @@ public class CourseService {
         return new PageImpl<>(courseDTOList, PageRequest.of(offset / size, size), totalCourses);
     }
 
+    public Integer getInstructorCoursesCount(int infoId){
+
+        return courseRepository.countInstructorCourses(infoId);
+    }
+
+    public List<CourseDTO> getCourseListByInfoId(Integer infoId){
+        List<Course> courseList = courseRepository.findCoursesByStudentId(infoId);
+
+        return courseList.stream()
+                .map(this::convertToDTO) // ✅ DTO 변환
+                .collect(Collectors.toList());
+    }
 
     public CourseDTO convertToDTO(Course course){
 
