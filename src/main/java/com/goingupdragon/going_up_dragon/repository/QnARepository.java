@@ -53,5 +53,13 @@ public interface QnARepository extends JpaRepository<QnA, Integer> {
 """, nativeQuery = true)
     List<QnA> findRepliesByQnAId(@Param("qnaId") Integer qnaId);
 
+    @Query("SELECT q FROM QnA q WHERE q.course.instructor.infoId = :infoId AND q.parentQnA IS NULL")
+    List<QnA> findInstructorQnAs(@Param("infoId") Integer infoId);
+
+    @Query("SELECT COUNT(q) FROM QnA q WHERE q.course.instructor.infoId = :infoId AND q.parentQnA IS NULL")
+    Integer countInstructorQnAs(@Param("infoId") Integer infoId);
+
+    @Query(value = "SELECT * FROM qna WHERE course_id IN (SELECT course_id FROM courses WHERE info_id = :infoId) AND parent_id IS NULL LIMIT 5", nativeQuery = true)
+    List<QnA> findInstructorSampleQnAs(@Param("infoId") Integer infoId);
 
 }

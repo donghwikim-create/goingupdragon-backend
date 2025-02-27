@@ -15,8 +15,18 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
     @Query("SELECT c FROM Course c WHERE c.courseId = :courseId")
     Course findCourse (@Param("courseId") Integer courseId);
 
+    // 특정 강사의 모든 강의 조회
     @Query ("SELECT c FROM Course c WHERE c.instructor.infoId = :infoId")
     List<Course> findInstructorCourses (@Param("infoId")Integer infoId);
+
+    // 특정 강사의 강의 샘플 데이터 조회 (최적화를 위함)
+    @Query(value = "SELECT * FROM courses WHERE info_id = :infoId LIMIT 4", nativeQuery = true)
+    List<Course> findInstructorSampleCourses(@Param("infoId") Integer infoId);
+
+    // 특정 강사의 강의 갯수 조회
+    @Query("SELECT COUNT(c) FROM Course c WHERE c.instructor.infoId = :infoId")
+    Integer countInstructorCourses(@Param("infoId") Integer infoId);
+
 
     @Query("SELECT c FROM Course c WHERE c.courseId IN :courseIds")
     List<Course> findCoursesByIds(@Param("courseIds") List<Integer> courseIds);
@@ -171,4 +181,16 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
             @Param("timeFilter") String timeFilter,
             @Param("selectedTags") Collection<Integer> selectedTags
     );
+
+    @Query("SELECT c FROM Course c JOIN Enrollment e ON c.courseId = e.course.courseId WHERE e.user.infoId = :infoId")
+    List<Course> findCoursesByStudentId(@Param("infoId") Integer infoId);
+
+    @Query("SELECT c FROM Course c JOIN LikeTable l ON c.courseId = l.course.courseId WHERE l.user.infoId = :infoId")
+    List<Course> findLikedCoursesByUserId(@Param("infoId") Integer infoId);
+
+    @Query("SELECT DISTINCT t.subjectTagName FROM Course c " +
+            "JOIN Enrollment e ON c.courseId = e.course.courseId " +
+            "JOIN SubjectTags t ON t.subjectTagId IN (c.subjectTag1.subjectTagId, c.subjectTag2.subjectTagId, c.subjectTag3.subjectTagId) " +
+            "WHERE e.user.infoId = :infoId")
+    List<String> findDistinctSubjectTagNamesByUserId(@Param("infoId") Integer infoId);
 }

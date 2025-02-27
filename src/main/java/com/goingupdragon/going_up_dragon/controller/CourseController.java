@@ -124,4 +124,17 @@ public class CourseController {
         );
         return ResponseEntity.ok(courses);
     }
+
+    @GetMapping("/count/{instructorId}")
+    public ResponseEntity<Integer> getInstructorCourseCount(@PathVariable Integer instructorId) {
+        int count = courseService.getInstructorCoursesCount(instructorId);
+        return ResponseEntity.ok(count);
+    }
+
+    // 학생이 수강신청한 강의리스트
+    @GetMapping("/student/{studentId}")
+    public ResponseEntity<List<CourseDTO>> getStudentCourses(@PathVariable("studentId") Integer studentId) {
+        List<CourseDTO> courseList = courseService.getCourseListByInfoId(studentId);
+        return ResponseEntity.ok(courseList);
+    }
 }
