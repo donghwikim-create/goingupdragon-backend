@@ -1,5 +1,6 @@
 package com.goingupdragon.going_up_dragon.repository;
 
+import com.goingupdragon.going_up_dragon.dto.CourseSearchResponseDTO;
 import com.goingupdragon.going_up_dragon.entity.Course;
 import com.goingupdragon.going_up_dragon.enums.Enums;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -193,4 +194,24 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
             "JOIN SubjectTags t ON t.subjectTagId IN (c.subjectTag1.subjectTagId, c.subjectTag2.subjectTagId, c.subjectTag3.subjectTagId) " +
             "WHERE e.user.infoId = :infoId")
     List<String> findDistinctSubjectTagNamesByUserId(@Param("infoId") Integer infoId);
+
+    // 검색어가 강의 제목 또는 설명에 포함되어 있는 강의 리스트를 반환
+    @Query(value = """
+        SELECT 
+            co.course_id AS courseId,
+            co.course_thumbnail AS courseThumbnail, 
+            co.course_title AS courseTitle, 
+            ui.info_id AS instructorId,
+            ui.nickname AS instructorNickname, 
+            ROUND(AVG(r.rate), 1) AS avgRate,
+            COUNT(r.course_id) AS reviewCount,
+            co.price AS price
+        FROM courses co
+        LEFT JOIN user_info ui ON co.info_id = ui.info_id
+        LEFT JOIN review r ON co.course_id = r.course_id
+        WHERE LOWER(co.course_title) LIKE LOWER(CONCAT('%', :searchQuery, '%'))
+           OR LOWER(co.short_description) LIKE LOWER(CONCAT('%', :searchQuery, '%'))
+        GROUP BY co.course_id, co.course_thumbnail, co.course_title, ui.info_id, ui.nickname, co.price
+        """, nativeQuery = true)
+    List<CourseSearchResponseDTO> searchCourses(@Param("searchQuery") String searchQuery);
 }

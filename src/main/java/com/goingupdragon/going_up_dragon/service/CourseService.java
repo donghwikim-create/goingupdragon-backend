@@ -1,18 +1,18 @@
 package com.goingupdragon.going_up_dragon.service;
 
 import com.goingupdragon.going_up_dragon.dto.CourseDTO;
+import com.goingupdragon.going_up_dragon.dto.CourseSearchResponseDTO;
 import com.goingupdragon.going_up_dragon.entity.Course;
 import com.goingupdragon.going_up_dragon.enums.Enums;
 import com.goingupdragon.going_up_dragon.repository.CourseRepository;
 import com.goingupdragon.going_up_dragon.repository.EnrollmentRepository;
 import com.goingupdragon.going_up_dragon.repository.ReviewRepository;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -133,4 +133,9 @@ public class CourseService {
                 course.getDuration()
                 );
     }
+
+    public List<CourseSearchResponseDTO> searchCourses(String searchQuery) {
+        return courseRepository.searchCourses(searchQuery);
+    }
+
 }

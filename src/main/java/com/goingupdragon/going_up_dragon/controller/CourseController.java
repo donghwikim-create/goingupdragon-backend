@@ -1,11 +1,10 @@
 package com.goingupdragon.going_up_dragon.controller;
 
 
+import com.goingupdragon.going_up_dragon.dto.CourseSearchResponseDTO;
+import com.goingupdragon.going_up_dragon.dto.SearchLogRequestDTO;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import com.goingupdragon.going_up_dragon.dto.CourseDTO;
-import com.goingupdragon.going_up_dragon.dto.like.CourseLikeDTO;
 import com.goingupdragon.going_up_dragon.enums.Enums;
 import com.goingupdragon.going_up_dragon.service.CourseService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -137,4 +136,11 @@ public class CourseController {
         List<CourseDTO> courseList = courseService.getCourseListByInfoId(studentId);
         return ResponseEntity.ok(courseList);
     }
+
+    // 검색어를 받아서 강의를 검색하는 API
+    @GetMapping("/search")
+    public ResponseEntity<List<CourseSearchResponseDTO>> searchCourses(@RequestParam String searchQuery) {
+        return ResponseEntity.ok(courseService.searchCourses(searchQuery));
+    }
+
 }
